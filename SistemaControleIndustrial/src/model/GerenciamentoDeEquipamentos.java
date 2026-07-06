@@ -18,7 +18,7 @@ public class GerenciamentoDeEquipamentos {
     private String dataDeInstalacao;
     private boolean status;
 
-    public GerenciamentoDeEquipamentos(int id , String nome , String categoria , String fabricante , String modelo , String setor , String dataDeInstalacao ){
+    public GerenciamentoDeEquipamentos( String nome , String categoria , String fabricante , String modelo , String setor , String dataDeInstalacao ){
         setCodigo(codigo);
         setNome(nome);
         setCategoria(categoria);    
@@ -26,6 +26,7 @@ public class GerenciamentoDeEquipamentos {
         setModelo(modelo);  
         setSetor(setor);
         setDataDeInstalacao(dataDeInstalacao);
+        setStatus(status);  
     }
 
     public Random getGeraCodigo() {
