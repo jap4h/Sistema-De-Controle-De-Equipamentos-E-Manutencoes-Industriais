@@ -1,0 +1,1 @@
+# Sistema-De-Controle-De-Equipamentos-E-Manutencoes-Industriais
