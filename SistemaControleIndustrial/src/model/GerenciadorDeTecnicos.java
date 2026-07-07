@@ -1,5 +1,8 @@
 package model;
 
+import App.*;
+import exception.CodigoExistenteException;
+import exception.MatriculaExistenteException;
 import exception.MatriculaInvalidaException;
 import exception.NomeInvalidoException;
 import exception.SetorInvalidoException;
@@ -23,6 +26,24 @@ public class GerenciadorDeTecnicos {
         
     }
 
+    public void validarCodigo() throws CodigoExistenteException{
+        for(int cont = 0 ; cont < Main.Tecnicos.size() ; cont++) {
+            GerenciadorDeTecnicos tecnico = (GerenciadorDeTecnicos) App.Main.Tecnicos.get(cont);
+            if(tecnico.getCodigo() == codigo){
+                throw new CodigoExistenteException("O codigo digitado já existe.");
+            }
+        }
+    }
+
+    public void validarMatricula() throws MatriculaExistenteException{
+        for(int cont = 0 ; cont < Main.Tecnicos.size() ; cont++ ){
+            GerenciadorDeTecnicos tecnico = (GerenciadorDeTecnicos) Main.Tecnicos.get(cont);
+            if(tecnico.getMatricula() == matricula){
+                throw new MatriculaExistenteException("A matricula inserida já existe.");
+            }
+        }
+    }
+        
     public String getNome() {
         return nome;
     }

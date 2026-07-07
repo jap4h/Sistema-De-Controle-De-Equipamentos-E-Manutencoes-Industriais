@@ -1,10 +1,6 @@
 package model;
 
-import exception.CategoriaInvalidaException;
-import exception.DataDeInstalacaoException;
-import exception.FabricanteInvalidoException;
-import exception.NomeInvalidoException;
-import exception.SetorInvalidoException;
+import exception.*;
 import java.util.Random;
 
 public class GerenciamentoDeEquipamentos {
@@ -27,6 +23,16 @@ public class GerenciamentoDeEquipamentos {
         setSetor(setor);
         setDataDeInstalacao(dataDeInstalacao);
         setStatus(status);  
+    }
+
+    public void validarCodigo(int codigoRecebido){
+        try {
+            if(codigoRecebido == codigo){
+            throw new CodigoExistenteException("O codigo digitado já existe.");
+        }
+        } catch (CodigoExistenteException E) {
+            System.err.println("Erro: " + E.getMessage());
+        }
     }
 
     public Random getGeraCodigo() {
