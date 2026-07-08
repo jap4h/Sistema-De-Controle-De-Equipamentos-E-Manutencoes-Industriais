@@ -26,33 +26,23 @@ public class GerenciadorDeTecnicos {
         
     }
 
-    public void validarCodigo(){
-        try {
-            for(int cont = 0 ; cont < Main.Tecnicos.size() ; cont++) {
-            GerenciadorDeTecnicos tecnico = (GerenciadorDeTecnicos) App.Main.Tecnicos.get(cont);
-            if(tecnico.getCodigo() == codigo){
+    public void validarCodigo()throws CodigoExistenteException {
+            for(GerenciadorDeTecnicos tecnicos : Main.Tecnicos) {
+            if(tecnicos.getCodigo() == this.codigo){
                 throw new CodigoExistenteException("O codigo já existe.");
             }
         } 
-        } catch (CodigoExistenteException E) {
-            System.err.println("Erro: " + E.getMessage());
-        }
         
     }
 
-    public void validarMatricula() {
-        try {
-            for(int cont = 0 ; cont < Main.Tecnicos.size() ; cont++ ){
-            GerenciadorDeTecnicos tecnico = (GerenciadorDeTecnicos) Main.Tecnicos.get(cont);
-            if(tecnico.getMatricula() == matricula){
+    public void validarMatricula() throws MatriculaExistenteException{
+        for(GerenciadorDeTecnicos tecnicos : Main.Tecnicos){
+            if(tecnicos.getMatricula() == this.matricula){
                 throw new MatriculaExistenteException("A matricula inserida já existe.");
             }
         }
-        } catch (MatriculaExistenteException E) {
-            System.err.println("Erro: " + E.getMessage());
-        }
-        
     }
+
         
     public String getNome() {
         return nome;

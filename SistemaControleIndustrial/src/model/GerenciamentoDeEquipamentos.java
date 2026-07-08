@@ -15,7 +15,7 @@ public class GerenciamentoDeEquipamentos {
     private String dataDeInstalacao;
     private String status;
 
-    public GerenciamentoDeEquipamentos( String nome , String categoria , String fabricante , String modelo , String setor , String dataDeInstalacao ){
+    public GerenciamentoDeEquipamentos( String nome , String categoria , String fabricante , String modelo , String setor , String dataDeInstalacao  , String status){
         setCodigo(codigo);
         setNome(nome);
         setCategoria(categoria);    
@@ -23,13 +23,12 @@ public class GerenciamentoDeEquipamentos {
         setModelo(modelo);  
         setSetor(setor);
         setDataDeInstalacao(dataDeInstalacao);
-        setStatus(status);  
+        setStatus(status);
     }
 
-    public void validarCodigo() throws Erro, CodigoExistenteException {
-        for( int cont = 0 ; cont < Main.Equipamentos.size() ; cont++ ){
-            GerenciamentoDeEquipamentos equipamento = (GerenciamentoDeEquipamentos) Main.Equipamentos.get(cont);
-            if(equipamento.getCodigo() == codigo) {
+    public void validarCodigo() throws CodigoExistenteException {
+        for(GerenciamentoDeEquipamentos equipamentos : Main.Equipamentos){
+            if(equipamentos.getCodigo() == codigo) {
                 throw new CodigoExistenteException("O codigo do equipamento já existe.");
             }
         }
@@ -159,5 +158,16 @@ public class GerenciamentoDeEquipamentos {
         }catch(Erro E){
             System.err.println("Erro: " + E.getMessage());
         }
+    }
+
+    public void mostrarEquipamento(){
+        System.out.println("Coidigo: " + getCodigo());
+        System.out.println("Nome: " + getNome());
+        System.out.println("Categoria: " + getCategoria());
+        System.out.println("Fabricante: " + getFabricante());
+        System.out.println("Modelo: " + getModelo());
+        System.out.println("Setor: " + getSetor());
+        System.out.println("Data de instalação: " + getDataDeInstalacao());
+        System.out.println("Status: " + getStatus()); 
     }
 }   

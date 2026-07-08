@@ -170,6 +170,9 @@ public class ControleDeManutencoes {
                     throw new Erro("O equipamento já está em uma manutenção.");
                 }
             }
+            if(situacao.equalsIgnoreCase("Finalizada")){
+                throw new Erro("Está manutenção já foi realizada.");
+            }
             if(situacao.equalsIgnoreCase("Em andamento") || situacao.equalsIgnoreCase("Aberta") || situacao.equalsIgnoreCase("Finalizada")){
                 if(situacao.equalsIgnoreCase("Aberta")){
                     equipamentoRelacionado.setStatus("Em manutencao");
