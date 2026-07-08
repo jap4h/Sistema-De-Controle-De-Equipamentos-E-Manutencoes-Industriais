@@ -1,10 +1,11 @@
 package model;
 
+import App.Main;
 import exception.*;
 import java.util.Random;
 
 public class GerenciamentoDeEquipamentos {
-    private Random geraCodigo = new Random();
+    final private Random geraCodigo = new Random();
     private int codigo = geraCodigo.nextInt(90000);
     private String nome;
     private String categoria;
@@ -12,7 +13,7 @@ public class GerenciamentoDeEquipamentos {
     private String modelo;
     private String setor;
     private String dataDeInstalacao;
-    private boolean status;
+    private String status;
 
     public GerenciamentoDeEquipamentos( String nome , String categoria , String fabricante , String modelo , String setor , String dataDeInstalacao ){
         setCodigo(codigo);
@@ -25,22 +26,13 @@ public class GerenciamentoDeEquipamentos {
         setStatus(status);  
     }
 
-    public void validarCodigo(int codigoRecebido){
-        try {
-            if(codigoRecebido == codigo){
-            throw new CodigoExistenteException("O codigo digitado já existe.");
+    public void validarCodigo() throws Erro, CodigoExistenteException {
+        for( int cont = 0 ; cont < Main.Equipamentos.size() ; cont++ ){
+            GerenciamentoDeEquipamentos equipamento = (GerenciamentoDeEquipamentos) Main.Equipamentos.get(cont);
+            if(equipamento.getCodigo() == codigo) {
+                throw new CodigoExistenteException("O codigo do equipamento já existe.");
+            }
         }
-        } catch (CodigoExistenteException E) {
-            System.err.println("Erro: " + E.getMessage());
-        }
-    }
-
-    public Random getGeraCodigo() {
-        return geraCodigo;
-    }
-
-    public void setGeraCodigo(Random geraId) {
-        this.geraCodigo = geraId;
     }
 
     public int getCodigo() {
@@ -108,7 +100,15 @@ public class GerenciamentoDeEquipamentos {
     }
 
     public void setModelo(String modelo) {
+        try {
+            if(modelo == null || modelo.isEmpty()){
+            throw new Erro("Modelo inserido está vazio.");
+        }
         this.modelo = modelo;
+        } catch (Erro E) {
+            System.err.println("Erro: " + E.getMessage());
+        }
+        
     }
 
     public String getSetor() {
@@ -146,12 +146,18 @@ public class GerenciamentoDeEquipamentos {
         }
     }
 
-    public boolean isStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
+    public void setStatus(String status) {
+        try{
+            if(!status.equalsIgnoreCase("inativo") || !status.equalsIgnoreCase("Operando") || !status.equalsIgnoreCase("Em manutencao")){
+                throw new Erro("Status inserido invalido.");
+            }
+            this.status = status;
+        }catch(Erro E){
+            System.err.println("Erro: " + E.getMessage());
+        }
     }
-    
 }   

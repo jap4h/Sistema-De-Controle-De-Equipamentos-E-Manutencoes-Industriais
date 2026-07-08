@@ -10,7 +10,7 @@ import exception.TelefoneInvalidoException;
 import java.util.Random;
 
 public class GerenciadorDeTecnicos {
-    private Random geraCodigo = new Random();
+    final private Random geraCodigo = new Random();
     private int codigo = geraCodigo.nextInt(90000);
     private String nome;
     private String setor;
@@ -26,22 +26,32 @@ public class GerenciadorDeTecnicos {
         
     }
 
-    public void validarCodigo() throws CodigoExistenteException{
-        for(int cont = 0 ; cont < Main.Tecnicos.size() ; cont++) {
+    public void validarCodigo(){
+        try {
+            for(int cont = 0 ; cont < Main.Tecnicos.size() ; cont++) {
             GerenciadorDeTecnicos tecnico = (GerenciadorDeTecnicos) App.Main.Tecnicos.get(cont);
             if(tecnico.getCodigo() == codigo){
-                throw new CodigoExistenteException("O codigo digitado já existe.");
+                throw new CodigoExistenteException("O codigo já existe.");
             }
+        } 
+        } catch (CodigoExistenteException E) {
+            System.err.println("Erro: " + E.getMessage());
         }
+        
     }
 
-    public void validarMatricula() throws MatriculaExistenteException{
-        for(int cont = 0 ; cont < Main.Tecnicos.size() ; cont++ ){
+    public void validarMatricula() {
+        try {
+            for(int cont = 0 ; cont < Main.Tecnicos.size() ; cont++ ){
             GerenciadorDeTecnicos tecnico = (GerenciadorDeTecnicos) Main.Tecnicos.get(cont);
             if(tecnico.getMatricula() == matricula){
                 throw new MatriculaExistenteException("A matricula inserida já existe.");
             }
         }
+        } catch (MatriculaExistenteException E) {
+            System.err.println("Erro: " + E.getMessage());
+        }
+        
     }
         
     public String getNome() {
@@ -75,26 +85,19 @@ public class GerenciadorDeTecnicos {
         }
        
     }
-
-    public Random getGeraCodigo() {
-        return geraCodigo;
-    }
-
-    public void setGeraCodigo(Random geraCodigo) {
-        this.geraCodigo = geraCodigo;
-    }
     
     public int getCodigo() {
         return codigo;
     }
 
     public void setCodigo(int codigo) {
+        this.codigo = codigo;
         if(codigo <= 0 ){
             while (codigo <= 0 ){
                 this.codigo = geraCodigo.nextInt(90000);
             }
         }
-        this.codigo = codigo;
+        
     }
 
     public int getMatricula() {
