@@ -17,7 +17,7 @@ public class GerenciadorDeTecnicos {
     private int matricula;
     private String telefone;
 
-    public GerenciadorDeTecnicos( String nome , String setor , int matricula , String telefone){
+    public GerenciadorDeTecnicos( String nome , String setor , int matricula , String telefone) throws Exception{
         setCodigo(codigo);
         setNome(nome);  
         setSetor(setor);
@@ -26,7 +26,7 @@ public class GerenciadorDeTecnicos {
         
     }
 
-    public void validarCodigo()throws CodigoExistenteException {
+    public void validarCodigo()throws Exception {
             for(GerenciadorDeTecnicos tecnicos : Main.Tecnicos) {
             if(tecnicos.getCodigo() == this.codigo){
                 throw new CodigoExistenteException("O codigo já existe.");
@@ -35,7 +35,7 @@ public class GerenciadorDeTecnicos {
         
     }
 
-    public void validarMatricula() throws MatriculaExistenteException{
+    public void validarMatricula() throws Exception{
         for(GerenciadorDeTecnicos tecnicos : Main.Tecnicos){
             if(tecnicos.getMatricula() == this.matricula){
                 throw new MatriculaExistenteException("A matricula inserida já existe.");
@@ -48,32 +48,24 @@ public class GerenciadorDeTecnicos {
         return nome;
     }
 
-    public void setNome(String nome) {
-        try {
-            if(nome == null || nome.isEmpty()){
-                throw new NomeInvalidoException("O nome inserido está vazio.");
-            }
-            this.nome = nome;
-        } catch (NomeInvalidoException E) {
-            System.err.println("Erro: " + E.getMessage());
+    public void setNome(String nome) throws Exception {
+
+        if(nome == null || nome.isEmpty()){
+            throw new NomeInvalidoException("O nome inserido está vazio.");
         }
+        this.nome = nome;
     }
 
     public String getSetor() {
         return setor;
     }
 
-    public void setSetor(String setor) {
-        try{
+    public void setSetor(String setor) throws Exception {
         if(setor == null || setor.isEmpty()){
             throw new SetorInvalidoException("O setor inserido está vazio.");
         }
         this.setor = setor;
-        }
-        catch(SetorInvalidoException E){
-            System.err.println("Erro: " + E.getMessage());
-        }
-       
+        
     }
     
     public int getCodigo() {
@@ -81,11 +73,13 @@ public class GerenciadorDeTecnicos {
     }
 
     public void setCodigo(int codigo) {
-        this.codigo = codigo;
         if(codigo <= 0 ){
             while (codigo <= 0 ){
                 this.codigo = geraCodigo.nextInt(90000);
             }
+        }
+        else{
+            this.codigo = codigo;
         }
         
     }
@@ -94,24 +88,18 @@ public class GerenciadorDeTecnicos {
         return matricula;
     }
 
-    public void setMatricula(int matricula) {
-        try {
-            if(matricula <= 0 ){
-                throw new  MatriculaInvalidaException("A matricula insrida é invalida.");
-            }
-            this.matricula = matricula;
-        } catch (MatriculaInvalidaException E) {
-            System.err.println("Erro: " + E.getMessage());
+    public void setMatricula(int matricula) throws Exception{
+        if(matricula <= 0 ){
+            throw new  MatriculaInvalidaException("A matricula insrida é invalida.");
         }
-        
+        this.matricula = matricula;  
     }
 
     public String getTelefone() {
         return telefone;
     }
 
-    public void setTelefone(String telefone) {
-        try{
+    public void setTelefone(String telefone) throws Exception {
             if(telefone == null || telefone.isEmpty()){
                 throw new TelefoneInvalidoException("O telefone inserido está vazio.");
             }  
@@ -119,9 +107,6 @@ public class GerenciadorDeTecnicos {
                 throw new TelefoneInvalidoException("O telefone inserido é invalido.");
             }      
             this.telefone = telefone;
-        }
-        catch(TelefoneInvalidoException E){
-            System.err.println("Erro: " + E.getMessage());
-        }
     }
+
 }

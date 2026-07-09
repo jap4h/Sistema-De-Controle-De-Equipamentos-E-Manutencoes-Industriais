@@ -17,7 +17,7 @@ public class ControleDeManutencoes {
     private String descricaoDoProblema ;
     private String situacao;
 
-    public ControleDeManutencoes(String dataDeAbertura , String dataDeEncerramento , String tipoDaManutencao , String descricaoDoProblema ) throws Erro {
+    public ControleDeManutencoes(String dataDeAbertura , String dataDeEncerramento , String tipoDaManutencao , String descricaoDoProblema ) throws Exception {
         setCodigoDaManutencao(codigoDaManutencao);
         setDataDeAbertura(dataDeAbertura);  
         setDataDeEncerramento(dataDeEncerramento);  
@@ -57,24 +57,23 @@ public class ControleDeManutencoes {
                 setCodigoDaManutencao(geraId.nextInt());
             }
         }
-        this.codigoDaManutencao = codigoDaManutencao;
+        else{
+            this.codigoDaManutencao = codigoDaManutencao;
+        }
+        
     }
 
     public Object getEquipamentoRelacionado() {
         return equipamentoRelacionado;
     }
 
-    public void setEquipamentoRelacionado(GerenciamentoDeEquipamentos equipamentoR)  {
-        try {
-            for(ControleDeManutencoes manutencoes : Main.Manutencoes){
-                if(manutencoes.getEquipamentoRelacionado() == equipamentoR && manutencoes.getSituacao().equalsIgnoreCase("Aberta") && manutencoes.getSituacao().equalsIgnoreCase("Em andamento")){
-                    throw new Erro("Equipamento já está em manutenção.");
-                }
+    public void setEquipamentoRelacionado(GerenciamentoDeEquipamentos equipamentoR) throws Exception {
+        for(ControleDeManutencoes manutencoes : Main.Manutencoes){
+            if(manutencoes.getEquipamentoRelacionado() == equipamentoR && manutencoes.getSituacao().equalsIgnoreCase("Aberta") && manutencoes.getSituacao().equalsIgnoreCase("Em andamento")){
+                throw new Erro("Equipamento já está em manutenção.");
             }
-            this.equipamentoRelacionado = equipamentoR;
-        } catch (Erro E) {
-            System.err.println("Erro: " + E.getMessage());
         }
+        this.equipamentoRelacionado = equipamentoR;
     }
 
     public Object getTecnicoResponsavel() {
