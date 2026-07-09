@@ -38,6 +38,26 @@ public class Main {
     public static void cadastrarManutencao(String dataDeAbertura, String dataDeEncerramento, String tipoDaManutencao, String descricaoDoProblema) throws Exception{
         try{
             ControleDeManutencoes manutencao = new ControleDeManutencoes(dataDeAbertura, dataDeEncerramento, tipoDaManutencao, descricaoDoProblema);
+            System.out.println("Digite o codigo do equipamento em manutenção: ");
+            int codEqpMan = sc.nextInt();
+            sc.nextLine();
+            for(GerenciamentoDeEquipamentos equipamentos : Equipamentos){
+                if(equipamentos.getCodigo() == codEqpMan){
+                    manutencao.setEquipamentoRelacionado(equipamentos);
+                }else{
+                    throw new Erro("Equipamento não encontrado.");
+                }
+            }
+            System.out.println("Digite o codigo do tecnico responsavel: ");
+            int codTecMan = sc.nextInt();
+            sc.nextLine();
+            for(GerenciadorDeTecnicos tecnicos : Tecnicos){
+                if(tecnicos.getCodigo() == codTecMan){
+                    manutencao.setTecnicoResponsavel(tecnicos);
+                }else{
+                    throw new Erro("O tecnic não foi encontrado.");
+                }
+            }
             Manutencoes.add(manutencao);
             System.out.println("Manutenção cadastrada com sucesso.");
         } catch(Exception E){
@@ -329,8 +349,7 @@ public class Main {
                                 String tipoManutencao = sc.nextLine();
                                 System.out.println("Digite a descrição do problema: ");
                                 String descricaoProblema = sc.nextLine();
-                                ControleDeManutencoes controle = new ControleDeManutencoes(tipoManutencao, dataEncerramentoManutencao, dataAberturaManutencao, descricaoProblema);
-                                Manutencoes.add(controle);
+                                cadastrarManutencao(dataAberturaManutencao, dataEncerramentoManutencao, tipoManutencao, descricaoProblema);
                             }catch(Exception E){
                                 System.err.println("Erro: " + E.getMessage());
                             }
@@ -455,7 +474,7 @@ public class Main {
                                 }
                             }
                             System.out.println("Equipamtos operando: " + eqpsOprnd);
-
+                            break;
                         case 5:
                             int eqpsIntvs = 0;
                             for(ControleDeManutencoes manutencoes : Manutencoes){

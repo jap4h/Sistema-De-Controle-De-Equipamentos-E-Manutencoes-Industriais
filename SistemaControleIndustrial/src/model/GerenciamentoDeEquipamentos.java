@@ -1,12 +1,11 @@
 package model;
 
-import app.*;
 import exception.*;
 import java.util.Random;
 
 public class GerenciamentoDeEquipamentos {
     final private Random geraCodigo = new Random();
-    private int codigo = geraCodigo.nextInt(90000);
+    private int codigo = 0;
     private String nome;
     private String categoria;
     private String fabricante;
@@ -27,7 +26,7 @@ public class GerenciamentoDeEquipamentos {
     }
 
     public void validarCodigo() throws Exception {
-        for(GerenciamentoDeEquipamentos equipamentos : Main.Equipamentos){
+        for(GerenciamentoDeEquipamentos equipamentos : service.ArrayListServices.Equipamentos){
             if(equipamentos.getCodigo() == codigo) {
                 throw new CodigoExistenteException("O codigo do equipamento já existe.");
             }
@@ -39,14 +38,10 @@ public class GerenciamentoDeEquipamentos {
     }
 
     public void setCodigo(int codigo) {
-        if(codigo <= 0 ){
-            while(codigo <= 0 ){
+            while(this.codigo <= 0 ){
                 this.codigo = geraCodigo.nextInt(90000); 
             }
-        }
-        else{
             this.codigo = codigo;
-        }
     }
 
     public String getNome() {

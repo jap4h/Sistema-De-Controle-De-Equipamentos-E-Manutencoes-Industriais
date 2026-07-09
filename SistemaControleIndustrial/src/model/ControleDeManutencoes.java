@@ -1,6 +1,5 @@
 package model;
 
-import app.Main;
 import exception.*;
 import java.util.Random;
 import java.util.Scanner;
@@ -8,7 +7,7 @@ import java.util.Scanner;
 public class ControleDeManutencoes {
     private Scanner sc = new Scanner(System.in);
     private Random geraId = new Random();
-    private int codigoDaManutencao;
+    private int codigoDaManutencao = 0;
     private GerenciamentoDeEquipamentos equipamentoRelacionado;
     private GerenciadorDeTecnicos tecnicoResponsavel;
     private String dataDeAbertura;
@@ -23,9 +22,9 @@ public class ControleDeManutencoes {
         setDataDeEncerramento(dataDeEncerramento);  
         setTipoDaManutencao(tipoDaManutencao);  
         setDescricaoDoProblema(descricaoDoProblema);    
-        setSituacao("Aberta");
+        setTecnicoResponsavel(tecnicoResponsavel);
         setEquipamentoRelacionado(equipamentoRelacionado);
-        setTecnicoResponsavel(tecnicoResponsavel);  
+        setSituacao("Aberta");
     }
 
     public void AlterarSituaçãoDaManutenção(String situacao) throws Exception {
@@ -48,15 +47,10 @@ public class ControleDeManutencoes {
     }
 
     public void setCodigoDaManutencao(int codigoDaManutencao) {
-        if(codigoDaManutencao <= 0){
-            while(codigoDaManutencao <= 0 ){
-                setCodigoDaManutencao(geraId.nextInt());
-            }
+        while(this.codigoDaManutencao <= 0 ){
+            this.codigoDaManutencao = geraId.nextInt(90000);
         }
-        else{
-            this.codigoDaManutencao = codigoDaManutencao;
-        }
-        
+        this.codigoDaManutencao = codigoDaManutencao;
     }
 
     public GerenciamentoDeEquipamentos getEquipamentoRelacionado() {
@@ -64,8 +58,8 @@ public class ControleDeManutencoes {
     }
 
     public void setEquipamentoRelacionado(GerenciamentoDeEquipamentos equipamentoR) throws Exception {
-        for(ControleDeManutencoes manutencoes : Main.Manutencoes){
-            if(manutencoes.getEquipamentoRelacionado() == equipamentoR && manutencoes.getSituacao().equalsIgnoreCase("Aberta") && manutencoes.getSituacao().equalsIgnoreCase("Em andamento")){
+        for(ControleDeManutencoes manutencoes : service.ArrayListServices.Manutencoes){
+            if(manutencoes.getEquipamentoRelacionado() == equipamentoR && (manutencoes.getSituacao().equalsIgnoreCase("Aberta") || manutencoes.getSituacao().equalsIgnoreCase("Em andamento"))){
                 throw new Erro("Equipamento já está em manutenção.");
             }
         }
@@ -143,8 +137,8 @@ public class ControleDeManutencoes {
         if(situacao == null || situacao.isEmpty()){
             throw new Erro("A situação inserida está vazia.");
         }
-        for(ControleDeManutencoes manutencoes : Main.Manutencoes){
-            if(manutencoes.getEquipamentoRelacionado() == equipamentoRelacionado && (manutencoes.getSituacao() .equalsIgnoreCase("Em andamento") || manutencoes.getSituacao().equalsIgnoreCase("Aberta"))){
+        for(ControleDeManutencoes manutencoes : service.ArrayListServices.Manutencoes ){
+            if(manutencoes.getEquipamentoRelacionado().equals(equipamentoRelacionado) && (manutencoes.getSituacao() .equalsIgnoreCase("Em andamento") || manutencoes.getSituacao().equalsIgnoreCase("Aberta"))){
                 throw new Erro("O equipamento já está em uma manutenção.");
             }
         }

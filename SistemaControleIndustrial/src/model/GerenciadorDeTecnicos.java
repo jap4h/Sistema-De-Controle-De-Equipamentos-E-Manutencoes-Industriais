@@ -1,13 +1,12 @@
 package model;
 
 
-import app.*;
 import exception.*;
 import java.util.Random;
 
 public class GerenciadorDeTecnicos {
     final private Random geraCodigo = new Random();
-    private int codigo = geraCodigo.nextInt(90000);
+    private int codigo = 0;
     private String nome;
     private String setor;
     private int matricula;
@@ -23,7 +22,7 @@ public class GerenciadorDeTecnicos {
     }
 
     public void validarCodigo()throws Exception {
-            for(GerenciadorDeTecnicos tecnicos : Main.Tecnicos) {
+            for(GerenciadorDeTecnicos tecnicos : service.ArrayListServices.Tecnicos) {
             if(tecnicos.getCodigo() == this.codigo){
                 throw new CodigoExistenteException("O codigo já existe.");
             }
@@ -32,7 +31,7 @@ public class GerenciadorDeTecnicos {
     }
 
     public void validarMatricula() throws Exception{
-        for(GerenciadorDeTecnicos tecnicos : Main.Tecnicos){
+        for(GerenciadorDeTecnicos tecnicos : service.ArrayListServices.Tecnicos){
             if(tecnicos.getMatricula() == this.matricula){
                 throw new MatriculaExistenteException("A matricula inserida já existe.");
             }
