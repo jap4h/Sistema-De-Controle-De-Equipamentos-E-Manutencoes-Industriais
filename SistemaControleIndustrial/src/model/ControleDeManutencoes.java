@@ -1,6 +1,6 @@
 package model;
 
-import App.Main;
+import app.Main;
 import exception.*;
 import java.util.Random;
 import java.util.Scanner;
@@ -28,23 +28,19 @@ public class ControleDeManutencoes {
         setTecnicoResponsavel(tecnicoResponsavel);  
     }
 
-    public void AlterarSituaçãoDaManutenção(String situacao) throws Erro {
+    public void AlterarSituaçãoDaManutenção(String situacao) throws Exception {
         setSituacao(situacao);
     }
     
-    public void FinalizarManutencao() throws Erro{
-        try{
-            System.out.println("Digite a data de encerramento: ");
-            String dataE = sc.nextLine();
-            if(dataE.length() != 10){
-                throw new Erro("A data digitada é invalida.");
-            }
-            setDataDeEncerramento(dataE);
-            setSituacao("Finalizada");
-            System.out.println("Manutenção finalizada com sucesso.");
-        }catch(Erro E){
-            System.err.println("Erro: " + E.getMessage() );
+    public void FinalizarManutencao() throws Exception{
+        System.out.println("Digite a data de encerramento: ");
+        String dataE = sc.nextLine();
+        if(dataE.length() != 10){
+            throw new Erro("A data digitada é invalida.");
         }
+        setDataDeEncerramento(dataE);
+        setSituacao("Finalizada");
+        System.out.println("Manutenção finalizada com sucesso.");
     }
 
     public int getCodigoDaManutencao() {
@@ -63,7 +59,7 @@ public class ControleDeManutencoes {
         
     }
 
-    public Object getEquipamentoRelacionado() {
+    public GerenciamentoDeEquipamentos getEquipamentoRelacionado() {
         return equipamentoRelacionado;
     }
 
@@ -76,7 +72,7 @@ public class ControleDeManutencoes {
         this.equipamentoRelacionado = equipamentoR;
     }
 
-    public Object getTecnicoResponsavel() {
+    public GerenciadorDeTecnicos getTecnicoResponsavel() {
         return tecnicoResponsavel;
     }
 
@@ -89,111 +85,99 @@ public class ControleDeManutencoes {
         return dataDeAbertura;
     }
 
-    public void setDataDeAbertura(String dataDeAbertura) throws Erro {
-        try {
-            if(dataDeAbertura == null || dataDeAbertura.isEmpty()){
-                throw new Erro("A data inserida está vazia");
-            }
-            if(dataDeAbertura.length() != 10){
-                throw new Erro("A data inserida é invalida.");
-            }
-            this.dataDeAbertura = dataDeAbertura;          
-        } catch (Erro E) {
-            System.err.println("Erro: " + E.getMessage());
+    public void setDataDeAbertura(String dataDeAbertura) throws Exception {
+        if(dataDeAbertura == null || dataDeAbertura.isEmpty()){
+            throw new Erro("A data inserida está vazia");
         }
+        if(dataDeAbertura.length() != 10){
+            throw new Erro("A data inserida é invalida.");
+        }
+        this.dataDeAbertura = dataDeAbertura;          
     }
 
     public String getDataDeEncerramento() {
         return dataDeEncerramento;
     }
 
-    public void setDataDeEncerramento(String dataDeEncerramento) throws Erro {
-        try {
-            if(dataDeEncerramento == null || dataDeEncerramento.isEmpty()){
-                throw new Erro("A data de encerramento inserida está vazia");
-            }
-            if(dataDeEncerramento.length() != 10 ){
-                throw new Erro("A data de encerramento inserida não é valida.");
-            }
-            this.dataDeEncerramento = dataDeEncerramento;
-        }catch (Erro E) {
-            System.err.println("Erro: " + E.getMessage());
+    public void setDataDeEncerramento(String dataDeEncerramento) throws Exception {
+        if(dataDeEncerramento == null || dataDeEncerramento.isEmpty()){
+            throw new Erro("A data de encerramento inserida está vazia");
         }
+        if(dataDeEncerramento.length() != 10 ){
+            throw new Erro("A data de encerramento inserida não é valida.");
+        }
+        this.dataDeEncerramento = dataDeEncerramento;
     }
 
     public String getTipoDaManutencao() {
         return tipoDaManutencao;
     }
 
-    public void setTipoDaManutencao(String tipoDaManutencao) throws Erro {
-        try {
-            if(tipoDaManutencao == null || tipoDaManutencao.isEmpty()){
-                throw new Erro("O tipo da manutenção inserida está vazia");
-            }
-            if(tipoDaManutencao.equalsIgnoreCase("Corretiva") || tipoDaManutencao.equalsIgnoreCase("Preventiva")){
-                this.tipoDaManutencao = tipoDaManutencao;
-                return;
-            }
-            throw new Erro("Tipo de manutenção inserido é invalido.");
-        }catch (Erro E) {
-            System.err.println("Erro: " + E.getMessage());
+    public void setTipoDaManutencao(String tipoDaManutencao) throws Exception {
+        if(tipoDaManutencao == null || tipoDaManutencao.isEmpty()){
+            throw new Erro("O tipo da manutenção inserida está vazia");
         }
+        if(tipoDaManutencao.equalsIgnoreCase("Corretiva") || tipoDaManutencao.equalsIgnoreCase("Preventiva")){
+            this.tipoDaManutencao = tipoDaManutencao;
+            return;
+        }
+        throw new Erro("Tipo de manutenção inserido é invalido.");
     }
 
     public String getDescricaoDoProblema() {
         return descricaoDoProblema;
     }
 
-    public void setDescricaoDoProblema(String descricaoDoProblema) throws Erro {
-        try{
-            if(descricaoDoProblema == null || descricaoDoProblema.isEmpty()){
-                throw new Erro("A descrição do problema está vazia.");
-            }
-            this.descricaoDoProblema = descricaoDoProblema;
-        }catch(Erro E){
-            System.err.println("Erro: " + E.getMessage());
+    public void setDescricaoDoProblema(String descricaoDoProblema) throws Exception {
+        if(descricaoDoProblema == null || descricaoDoProblema.isEmpty()){
+            throw new Erro("A descrição do problema está vazia.");
         }
+        this.descricaoDoProblema = descricaoDoProblema;
     }
 
     public String getSituacao() {
         return situacao;
     }
 
-    public void setSituacao(String situacao) throws Erro {
-        try{
-            if(situacao == null || situacao.isEmpty()){
-                throw new Erro("A situação inserida está vazia.");
+    public void setSituacao(String situacao) throws Exception {
+        if(situacao == null || situacao.isEmpty()){
+            throw new Erro("A situação inserida está vazia.");
+        }
+        for(ControleDeManutencoes manutencoes : Main.Manutencoes){
+            if(manutencoes.getEquipamentoRelacionado() == equipamentoRelacionado && (manutencoes.getSituacao() .equalsIgnoreCase("Em andamento") || manutencoes.getSituacao().equalsIgnoreCase("Aberta"))){
+                throw new Erro("O equipamento já está em uma manutenção.");
             }
-            for(ControleDeManutencoes manutencoes : Main.Manutencoes){
-                if(manutencoes.getEquipamentoRelacionado() == equipamentoRelacionado && (manutencoes.getSituacao() .equalsIgnoreCase("Em andamento") || manutencoes.getSituacao().equalsIgnoreCase("Aberta"))){
-                    throw new Erro("O equipamento já está em uma manutenção.");
-                }
-            }
-            if(situacao.equalsIgnoreCase("Finalizada")){
-                throw new Erro("Está manutenção já foi realizada.");
-            }
-            if(situacao.equalsIgnoreCase("Em andamento") || situacao.equalsIgnoreCase("Aberta") || situacao.equalsIgnoreCase("Finalizada")){
-                if(situacao.equalsIgnoreCase("Aberta")){
-                    equipamentoRelacionado.setStatus("Em manutencao");
-                    this.situacao = situacao;
-                    return;
-                }
-                if(situacao.equalsIgnoreCase("Em andamento")){
-                    this.situacao = situacao;
-                    return;
-                }
-                if(situacao.equalsIgnoreCase("Finalizada")){
-                    equipamentoRelacionado.setStatus("Operando");
-                    this.situacao = situacao;
-                    return;
-                }
+        }
+        if(situacao.equalsIgnoreCase("Finalizada")){
+            throw new Erro("Está manutenção já foi realizada.");
+        }
+        if(situacao.equalsIgnoreCase("Em andamento") || situacao.equalsIgnoreCase("Aberta") || situacao.equalsIgnoreCase("Finalizada")){
+            if(situacao.equalsIgnoreCase("Aberta")){
+                equipamentoRelacionado.setStatus("Em manutencao");
+                this.situacao = situacao;
                 return;
             }
+            if(situacao.equalsIgnoreCase("Em andamento")){
+                this.situacao = situacao;
+                return;
+            }
+            if(situacao.equalsIgnoreCase("Finalizada")){
+                equipamentoRelacionado.setStatus("Operando");
+                this.situacao = situacao;
+                return;
+            }    
             throw new Erro("A situação inserida é invalida.");
-        }catch(Erro E){
-            System.err.println("Erro: " + E.getMessage());
         }
     }
+    public void mostrarManutencao(){
+        System.out.println("Equipamento: " + getCodigoDaManutencao());
+        System.out.println("Data De Abertura: " + getDataDeAbertura());
+        System.out.println("Tipo da manutenção: " + getTipoDaManutencao());
+        System.out.println("Descrição do problema: " + getDescricaoDoProblema());
+        System.out.println("Situação da manutenção: " + getSituacao());
+        System.out.println("Equipamento consertado: " + equipamentoRelacionado.getCodigo());
+        System.out.println("Tecnico responsavel: " + tecnicoResponsavel.getNome() + "\nMatricula: " + tecnicoResponsavel.getMatricula());
+    }
 
-    // ConsultarManutenção;
 }
+

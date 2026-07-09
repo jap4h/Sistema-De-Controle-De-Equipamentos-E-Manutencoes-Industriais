@@ -1,12 +1,8 @@
 package model;
 
-import App.*;
-import exception.CodigoExistenteException;
-import exception.MatriculaExistenteException;
-import exception.MatriculaInvalidaException;
-import exception.NomeInvalidoException;
-import exception.SetorInvalidoException;
-import exception.TelefoneInvalidoException;
+
+import app.*;
+import exception.*;
 import java.util.Random;
 
 public class GerenciadorDeTecnicos {
@@ -109,4 +105,11 @@ public class GerenciadorDeTecnicos {
             this.telefone = telefone;
     }
 
+    public void mostrarTecnico(){
+        System.out.println("Tecnico: " + getNome());
+        System.out.println("Codigo: " + getCodigo());
+        System.out.println("Matricula: " + getMatricula());
+        System.out.println("Telefone: " + getTelefone());
+        System.out.println("Setor: " + getSetor());
+    }
 }
