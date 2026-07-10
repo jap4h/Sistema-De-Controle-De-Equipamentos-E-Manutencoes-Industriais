@@ -1,16 +1,15 @@
 package app;
 
-
 import exception.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 import model.*;
 
 public class Main {
-    public static ArrayList <model.GerenciadorDeTecnicos> Tecnicos = new ArrayList<>();
-    public static ArrayList <model.GerenciamentoDeEquipamentos> Equipamentos = new ArrayList<>();
-    public static ArrayList <model.ControleDeManutencoes> Manutencoes = new ArrayList<>();
-    static Scanner sc = new Scanner(System.in);
+    private static ArrayList <model.GerenciadorDeTecnicos> Tecnicos = new ArrayList<>();
+    private static ArrayList <model.GerenciamentoDeEquipamentos> Equipamentos = new ArrayList<>();
+    private static ArrayList <model.ControleDeManutencoes> Manutencoes = new ArrayList<>();
+    private static Scanner sc = new Scanner(System.in);
     
     public static void cadastrarTecnicos(String nome , String setor , int matricula , String telefone) {
         try {
@@ -35,29 +34,10 @@ public class Main {
         }
     }
 
-    public static void cadastrarManutencao(String dataDeAbertura, String dataDeEncerramento, String tipoDaManutencao, String descricaoDoProblema) throws Exception{
+    public static void cadastrarManutencao(String dataDeAbertura, String dataDeEncerramento, String tipoDaManutencao, String descricaoDoProblema , GerenciamentoDeEquipamentos equipamentoEmManutencao , GerenciadorDeTecnicos tecnicoResponsavel) throws Exception{
         try{
-            ControleDeManutencoes manutencao = new ControleDeManutencoes(dataDeAbertura, dataDeEncerramento, tipoDaManutencao, descricaoDoProblema);
-            System.out.println("Digite o codigo do equipamento em manutenção: ");
-            int codEqpMan = sc.nextInt();
-            sc.nextLine();
-            for(GerenciamentoDeEquipamentos equipamentos : Equipamentos){
-                if(equipamentos.getCodigo() == codEqpMan){
-                    manutencao.setEquipamentoRelacionado(equipamentos);
-                }else{
-                    throw new Erro("Equipamento não encontrado.");
-                }
-            }
-            System.out.println("Digite o codigo do tecnico responsavel: ");
-            int codTecMan = sc.nextInt();
-            sc.nextLine();
-            for(GerenciadorDeTecnicos tecnicos : Tecnicos){
-                if(tecnicos.getCodigo() == codTecMan){
-                    manutencao.setTecnicoResponsavel(tecnicos);
-                }else{
-                    throw new Erro("O tecnic não foi encontrado.");
-                }
-            }
+            model.ControleDeManutencoes manutencao = new ControleDeManutencoes(dataDeAbertura, dataDeEncerramento, tipoDaManutencao, descricaoDoProblema, equipamentoEmManutencao, tecnicoResponsavel);
+            
             Manutencoes.add(manutencao);
             System.out.println("Manutenção cadastrada com sucesso.");
         } catch(Exception E){
@@ -134,60 +114,65 @@ public class Main {
                             }
                             break;
                         case 3:
-                            boolean encontradoAlterar = false;
-                            System.out.println("Digite o codigo desejado do equipamento pra alterar: ");
-                            int codAlterar  = sc.nextInt();
-                            sc.nextLine();
-                            for(GerenciamentoDeEquipamentos equipamentosAlterar : Equipamentos){
-                                if(equipamentosAlterar.getCodigo() == codAlterar){
-                                    encontradoAlterar = true;
-                                    System.out.println("Equipamento encontrado.");
-                                    System.out.println("Digite qual informação deseja alterar: \nNome \nCategoria \nModelo \nFabricante \nSetor \nData de instalação \nStatus");
-                                    String informacao = sc.nextLine();
-                                    if(informacao.equalsIgnoreCase("Nome")){
-                                        System.out.println("Digite o novo nome do equipamento: ");
-                                        equipamentosAlterar.setNome(sc.nextLine());
-                                        break;
-                                    }
-                                    if(informacao.equalsIgnoreCase("Categoria")){
-                                        System.out.println("Digite a nova categoria: ");
-                                        equipamentosAlterar.setCategoria(sc.nextLine());
-                                        break;
-                                    }
-                                    if(informacao.equalsIgnoreCase("Modelo")){
-                                        System.out.println("Digite o novo modelo: ");
-                                        equipamentosAlterar.setModelo(sc.nextLine());
-                                        break;
-                                    }
-                                    if(informacao.equalsIgnoreCase("Fabricante")){
-                                        System.out.println("Digite o novo fabricante: ");
-                                        equipamentosAlterar.setFabricante(sc.nextLine());
-                                        break;
-                                    }
-                                    if(informacao.equalsIgnoreCase("Setor")){
-                                        System.out.println("Digite o novo setor: ");
-                                        equipamentosAlterar.setSetor(sc.nextLine());
-                                        break;
-                                    }
-                                    if(informacao.equalsIgnoreCase("Data de instalação")){
-                                        System.out.println("Digite a data de instalação:");
-                                        equipamentosAlterar.setDataDeInstalacao(sc.nextLine());
-                                        break;
-                                    }
-                                    if(informacao.equalsIgnoreCase("Status")){
-                                        System.out.println("Digite o status do equipamento: ");
-                                        equipamentosAlterar.setStatus(sc.nextLine());
-                                        break;
-                                    }
-                                    else{
-                                        throw new Erro("O atributo que voê deseja altera é inexistente.");
+                            try {
+                                boolean encontradoAlterar = false;
+                                System.out.println("Digite o codigo desejado do equipamento pra alterar: ");
+                                int codAlterar  = sc.nextInt();
+                                sc.nextLine();
+                                for(GerenciamentoDeEquipamentos equipamentosAlterar : Equipamentos){
+                                    if(equipamentosAlterar.getCodigo() == codAlterar){
+                                        encontradoAlterar = true;
+                                        System.out.println("Equipamento encontrado.");
+                                        System.out.println("Digite qual informação deseja alterar: \nNome \nCategoria \nModelo \nFabricante \nSetor \nData de instalação \nStatus");
+                                        String informacao = sc.nextLine();
+                                        if(informacao.equalsIgnoreCase("Nome")){
+                                            System.out.println("Digite o novo nome do equipamento: ");
+                                            equipamentosAlterar.setNome(sc.nextLine());
+                                            break;
+                                        }
+                                        if(informacao.equalsIgnoreCase("Categoria")){
+                                            System.out.println("Digite a nova categoria: ");
+                                            equipamentosAlterar.setCategoria(sc.nextLine());
+                                            break;
+                                        }
+                                        if(informacao.equalsIgnoreCase("Modelo")){
+                                            System.out.println("Digite o novo modelo: ");
+                                            equipamentosAlterar.setModelo(sc.nextLine());
+                                            break;
+                                        }
+                                        if(informacao.equalsIgnoreCase("Fabricante")){
+                                            System.out.println("Digite o novo fabricante: ");
+                                            equipamentosAlterar.setFabricante(sc.nextLine());
+                                            break;
+                                        }
+                                        if(informacao.equalsIgnoreCase("Setor")){
+                                            System.out.println("Digite o novo setor: ");
+                                            equipamentosAlterar.setSetor(sc.nextLine());
+                                            break;
+                                        }
+                                        if(informacao.equalsIgnoreCase("Data de instalação")){
+                                            System.out.println("Digite a data de instalação:");
+                                            equipamentosAlterar.setDataDeInstalacao(sc.nextLine());
+                                            break;
+                                        }
+                                        if(informacao.equalsIgnoreCase("Status")){
+                                            System.out.println("Digite o status do equipamento: ");
+                                            equipamentosAlterar.setStatus(sc.nextLine());
+                                            break;
+                                        }
+                                        else{
+                                            throw new Erro("O atributo que voê deseja altera é inexistente.");
+                                        }
                                     }
                                 }
+                                if(!encontradoAlterar){
+                                    throw new Erro("Codigo digitado invalido");
+                                }
+                            } catch (Exception E) {
+                                System.err.println("Erro: " + E.getMessage());
                             }
-                            if(!encontradoAlterar){
-                                throw new Erro("Codigo digitado invalido");
-                            }
-                            break;
+                        break;
+
                         case 4: 
                             try {
                                 boolean encontradoEqp = false;
@@ -196,9 +181,13 @@ public class Main {
                                 sc.nextLine();
                                 for ( int cont = 0 ; cont < Equipamentos.size() ; cont++ ){
                                     if(Equipamentos.get(cont).getCodigo() == codExcluir){
-                                        Equipamentos.remove(cont);
-                                        System.out.println("Equipamento excluido com sucesso.");
-                                        encontradoEqp = true;
+                                        if( !Equipamentos.get(cont).getStatus().equalsIgnoreCase("Operando") && !Equipamentos.get(cont).getStatus().equalsIgnoreCase("Em manutencao")){
+                                            Equipamentos.remove(cont);
+                                            System.out.println("Equipamento excluido com sucesso.");
+                                            encontradoEqp = true;
+                                        }else{
+                                            throw new Exception("Equipamento está em manutenção.");
+                                        }
                                         break;
                                     } 
                                 }
@@ -238,8 +227,7 @@ public class Main {
                                 sc.nextLine();
                                 System.out.println("Digite o numero de telefone: ");
                                 String telefone = sc.nextLine();
-                                GerenciadorDeTecnicos tecnico = new GerenciadorDeTecnicos(nome, setor, matricula, telefone);
-                                Tecnicos.add(tecnico);
+                                cadastrarTecnicos(nome, setor, matricula, telefone);
                             } catch(Exception E){
                                 System.out.println("Erro: " + E.getMessage());
                             }
@@ -247,16 +235,19 @@ public class Main {
                             
                         case 2:
                             try {
+                                boolean encontradoCodTecAlt = false;
                                 System.out.println("Digite o codigo do tecnico pra coonsultar: ");
                                 int codTecCons = sc.nextInt();
                                 sc.nextLine();
                                 for(GerenciadorDeTecnicos tecnicos : Tecnicos){
                                     if(tecnicos.getCodigo() == codTecCons){
                                         tecnicos.mostrarTecnico();
-                                    }else{
-                                        throw new Erro("O codigo digitado não foi encontrado.");
+                                        encontradoCodTecAlt = true;
                                     }
                                 }
+                                if(encontradoCodTecAlt == false){
+                                        throw new Erro("O codigo digitado não foi encontrado.");
+                                    }
                             } catch (Exception E) {
                                 System.err.println("Erro: " + E.getMessage());
                             }
@@ -291,29 +282,33 @@ public class Main {
                                                     System.out.println("Digite o novo numero do telefone: ");
                                                     tecnicos.setTelefone(sc.nextLine());
                                                     break;
+
+                                                default: 
+                                                    throw new Erro("O atributo inserido é invalido");
                                         }
                                     }
                                 }
-                                
                             } catch (Exception E) {
                                 System.err.println("Erro: " + E.getMessage());
                             }
-                            
                             break;
 
                         case 4:
                             try {
+                                boolean encontradoTecExc = false;
                                 System.out.println("Digite o codigo do tecnico que você deseja excluir: ");
                                 int codTecExc = sc.nextInt();
                                 sc.nextLine();
                                 for(int cont = 0 ; cont < Main.Tecnicos.size() ; cont++ ){
                                     if(Main.Tecnicos.get(cont).getCodigo() == codTecExc){
                                         Main.Tecnicos.remove(cont);
+                                        encontradoTecExc = true;
                                         System.out.println("Tecnico removido com sucesso.");
-                                    }else{
-                                        throw new Erro("O tecnico não foi encontrado , codigo digitiado incorreto.");
                                     }
                                 }
+                                if(encontradoTecExc == false){
+                                        throw new Erro("O tecnico não foi encontrado , codigo digitiado incorreto.");
+                                    }
                             } catch (Exception E) {
                                 System.err.println("Erro: " + E.getMessage());
                             }
@@ -349,7 +344,36 @@ public class Main {
                                 String tipoManutencao = sc.nextLine();
                                 System.out.println("Digite a descrição do problema: ");
                                 String descricaoProblema = sc.nextLine();
-                                cadastrarManutencao(dataAberturaManutencao, dataEncerramentoManutencao, tipoManutencao, descricaoProblema);
+
+                                GerenciamentoDeEquipamentos equipamentoEmManutencao = null;
+                                System.out.println("Digite o codigo do equipamento em manutenção: ");
+                                int codEqpMan = sc.nextInt();
+                                sc.nextLine();
+                                boolean encontradoManEqps = false;
+                                for(GerenciamentoDeEquipamentos equipamentos : Equipamentos){
+                                    if(equipamentos.getCodigo() == codEqpMan){
+                                        equipamentoEmManutencao = equipamentos;
+                                        encontradoManEqps = true;
+                                    }
+                                }
+                                if(encontradoManEqps == false){
+                                        throw new Erro("Equipamento não encontrado.");
+                                }
+                                boolean encontradoManTec = false;
+                                GerenciadorDeTecnicos tecnicoResponsavel = null;
+                                System.out.println("Digite o codigo do tecnico responsavel: ");
+                                int codTecMan = sc.nextInt();
+                                sc.nextLine();
+                                for(GerenciadorDeTecnicos tecnicos : Tecnicos){
+                                    if(tecnicos.getCodigo() == codTecMan){
+                                        tecnicoResponsavel = tecnicos;
+                                        encontradoManTec = true;
+                                    }
+                                }
+                                if(encontradoManTec == false){
+                                        throw new Erro("O tecnic não foi encontrado.");
+                                    }
+                                cadastrarManutencao(dataAberturaManutencao, dataEncerramentoManutencao, tipoManutencao, descricaoProblema , equipamentoEmManutencao , tecnicoResponsavel);
                             }catch(Exception E){
                                 System.err.println("Erro: " + E.getMessage());
                             }
@@ -357,16 +381,19 @@ public class Main {
 
                         case 2:
                             try {
-                                 System.out.println("Digite o codigo da manutenção que deseja consultar: ");
+                                boolean encontradoCodManCon = false;
+                                System.out.println("Digite o codigo da manutenção que deseja consultar: ");
                                 int codManCons = sc.nextInt();
                                 for(ControleDeManutencoes controles : Manutencoes){
                                     if(controles.getCodigoDaManutencao() == codManCons){
                                         controles.mostrarManutencao();
+                                        encontradoCodManCon = true;
                                         break;
-                                    }else{
-                                        throw new Erro("A manutenção não foi encontrada , codigo não encontrado.");
                                     }
                                 }
+                                if(encontradoCodManCon == false){
+                                        throw new Erro("A manutenção não foi encontrada , codigo não encontrado.");
+                                    }
                             } catch (Exception E) {
                                 System.err.println("Erro: " + E.getMessage());
                             }
@@ -374,6 +401,7 @@ public class Main {
 
                         case 3:
                             try {
+                                boolean encontradoCodAltMan = false;
                                 System.out.println("Digite o codigo da manutenção: ");
                                 int codManAlt = sc.nextInt();
                                 sc.nextLine();
@@ -381,47 +409,56 @@ public class Main {
                                     if(manutencoes.getCodigoDaManutencao() == codManAlt){
                                         System.out.println("Digite o atributo que deseja alterar na manutenção: \n1-Tipo da manutenção \n2-Data de encerramento da manutenção \n3-Data de abertura da manutenção \n4-Descrição do problema");
                                         int perguntaAltMan = sc.nextInt();
+                                        sc.nextLine();
                                         switch(perguntaAltMan){
                                             case 1:
                                                 System.out.println("Digite o novo tipo da manutenção (Preventiva/Corretiva): ");
                                                 manutencoes.setTipoDaManutencao(sc.nextLine());
+                                                encontradoCodAltMan = true;
                                                 break;
 
                                             case 2:
                                                 System.out.println("Digite a nova data de encerramento da manutenção(xx/xx/xxxx: ");
                                                 manutencoes.setDataDeEncerramento(sc.nextLine());
+                                                encontradoCodAltMan = true;
                                                 break;
 
                                             case 3:
                                                 System.out.println("Digite a data de abertura da manutenção: ");
                                                 manutencoes.setDataDeAbertura(sc.nextLine());
+                                                encontradoCodAltMan = true;
                                                 break;
 
                                             case 4:
                                                 System.out.println("Digite a descrição do problema: ");
                                                 manutencoes.setDescricaoDoProblema(sc.nextLine());
+                                                encontradoCodAltMan = true;
                                                 break;
                                         }
-                                    }else{
-                                        throw new Erro("O codigo da mautenção não foi encontrado.");
                                     }
                                 }
-
+                                if(encontradoCodAltMan == false){
+                                        throw new Erro("O codigo da mautenção não foi encontrado.");
+                                    }
                             } catch (Exception E) {
+                                System.err.println("Erro: " + E.getMessage());
                             }                                                         
                             break;
 
                         case 4:
                             try {
+                                boolean encontradoManFin = false;
                                 System.out.println("Digite o codigo da manutenção que vai ser finalizada: ");
                                 int codManFin = sc.nextInt();
                                 sc.nextLine();
                                 for(ControleDeManutencoes controles : Manutencoes){
                                     if(controles.getCodigoDaManutencao() == codManFin){
                                         controles.FinalizarManutencao();
-                                    }else{
-                                        throw new Erro("O codigo da manutenção não foi encontrado.");
+                                        encontradoManFin = true;
                                     }
+                                }
+                                if(encontradoManFin == false){
+                                        throw new Erro("O codigo da manutenção não foi encontrado.");
                                 }
                             } catch (Exception E) {
                                 System.err.println("Erro: " + E.getMessage());
@@ -468,8 +505,8 @@ public class Main {
 
                         case 4:
                             int eqpsOprnd = 0;
-                            for(ControleDeManutencoes manutencoes : Manutencoes){
-                                if(manutencoes.getEquipamentoRelacionado().getStatus().equalsIgnoreCase("Operando")){
+                            for(GerenciamentoDeEquipamentos equipamentos : Equipamentos){
+                                if(equipamentos.getStatus().equalsIgnoreCase("Operando")){
                                     eqpsOprnd++;
                                 }
                             }
@@ -477,8 +514,8 @@ public class Main {
                             break;
                         case 5:
                             int eqpsIntvs = 0;
-                            for(ControleDeManutencoes manutencoes : Manutencoes){
-                                if(manutencoes.getEquipamentoRelacionado().getStatus().equalsIgnoreCase("Inativo")){
+                            for(GerenciamentoDeEquipamentos equipamentos : Equipamentos){
+                                if(equipamentos.getStatus().equalsIgnoreCase("Inativo")){
                                     eqpsIntvs++;
                                 }
                             }
@@ -526,7 +563,21 @@ public class Main {
         }
     }
 
-    public static void main(String[] args) throws Exception{
+    public static ArrayList<GerenciamentoDeEquipamentos> enviarEquipamentos(){
+        return Equipamentos;
+    }
+    public static ArrayList<GerenciadorDeTecnicos> enviarTecnicos(){
+        return Tecnicos;
+    }
+    public static ArrayList<ControleDeManutencoes> enviarManutencoes(){
+        return Manutencoes;
+    }
+    public static Scanner enviarScanner(){
+        return sc;
+    }
+
+
+    public void main(String[] args) throws Exception{
         Menu();
     }
 }

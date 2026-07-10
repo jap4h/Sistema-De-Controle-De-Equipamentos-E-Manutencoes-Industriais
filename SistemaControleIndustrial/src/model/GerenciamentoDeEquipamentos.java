@@ -38,10 +38,14 @@ public class GerenciamentoDeEquipamentos {
     }
 
     public void setCodigo(int codigo) {
+        if(codigo <= 0 ){
             while(this.codigo <= 0 ){
                 this.codigo = geraCodigo.nextInt(90000); 
             }
+        }else{
             this.codigo = codigo;
+        }
+   
     }
 
     public String getNome() {
@@ -120,10 +124,6 @@ public class GerenciamentoDeEquipamentos {
     public void setStatus(String status) throws Erro {
         if(!status.equalsIgnoreCase("inativo") && !status.equalsIgnoreCase("Operando") && !status.equalsIgnoreCase("Em manutencao")){
             throw new Erro("Status inserido invalido.");
-        }
-      
-        if(status.equalsIgnoreCase("Em manutencao")){
-            throw new Erro("O equipamento já está em manutenção.");
         }
         this.status = status;
     }

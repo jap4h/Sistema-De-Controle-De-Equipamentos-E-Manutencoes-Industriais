@@ -69,7 +69,7 @@ public class GerenciadorDeTecnicos {
 
     public void setCodigo(int codigo) {
         if(codigo <= 0 ){
-            while (codigo <= 0 ){
+            while (this.codigo <= 0 ){
                 this.codigo = geraCodigo.nextInt(90000);
             }
         }

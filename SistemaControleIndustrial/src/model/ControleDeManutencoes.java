@@ -1,11 +1,13 @@
 package model;
 
-import exception.*;
-import java.util.Random;
-import java.util.Scanner;
+
+import exception.Erro;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 public class ControleDeManutencoes {
-    private Scanner sc = new Scanner(System.in);
+    
     private Random geraId = new Random();
     private int codigoDaManutencao = 0;
     private GerenciamentoDeEquipamentos equipamentoRelacionado;
@@ -16,7 +18,7 @@ public class ControleDeManutencoes {
     private String descricaoDoProblema ;
     private String situacao;
 
-    public ControleDeManutencoes(String dataDeAbertura , String dataDeEncerramento , String tipoDaManutencao , String descricaoDoProblema ) throws Exception {
+    public ControleDeManutencoes(String dataDeAbertura , String dataDeEncerramento , String tipoDaManutencao , String descricaoDoProblema , GerenciamentoDeEquipamentos equipamentoRelacionado , GerenciadorDeTecnicos tecnicoResponsavel) throws Exception {
         setCodigoDaManutencao(codigoDaManutencao);
         setDataDeAbertura(dataDeAbertura);  
         setDataDeEncerramento(dataDeEncerramento);  
@@ -32,14 +34,15 @@ public class ControleDeManutencoes {
     }
     
     public void FinalizarManutencao() throws Exception{
-        System.out.println("Digite a data de encerramento: ");
-        String dataE = sc.nextLine();
-        if(dataE.length() != 10){
-            throw new Erro("A data digitada é invalida.");
+        if(!situacao.equalsIgnoreCase("Finalizada")){
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            String dataE = LocalDate.now().format(formatter);
+            setDataDeEncerramento(dataE);
+            setSituacao("Finalizada");
+            System.out.println("Manutenção finalizada com sucesso.");
+        }else{
+            throw new Exception("Manutenção já foi finalizada.");
         }
-        setDataDeEncerramento(dataE);
-        setSituacao("Finalizada");
-        System.out.println("Manutenção finalizada com sucesso.");
     }
 
     public int getCodigoDaManutencao() {
@@ -47,8 +50,11 @@ public class ControleDeManutencoes {
     }
 
     public void setCodigoDaManutencao(int codigoDaManutencao) {
-        while(this.codigoDaManutencao <= 0 ){
-            this.codigoDaManutencao = geraId.nextInt(90000);
+        if(codigoDaManutencao <= 0 ){
+            while(this.codigoDaManutencao <= 0 ){
+                this.codigoDaManutencao = geraId.nextInt(90000);
+                return;
+            }
         }
         this.codigoDaManutencao = codigoDaManutencao;
     }
